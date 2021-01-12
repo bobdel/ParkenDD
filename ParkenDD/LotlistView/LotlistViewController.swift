@@ -52,7 +52,8 @@ class LotlistViewController: UITableViewController, UIViewControllerPreviewingDe
 		Timer.every(5.minutes, updateData)
 	}
 
-    // works around iOS bug that draws activity spinner in front of tableView
+    // Works around iOS bug that draws activity spinner in front of tableView
+    // See https://trello.com/c/kC3l8ex2 for background
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         refreshControl?.superview?.sendSubview(toBack: refreshControl!)
