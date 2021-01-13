@@ -12,30 +12,30 @@ struct Colors {
 	static let favYellow = UIColor(rgba: "#F9E510")
 	static let unfavYellow = UIColor(rgba: "#F4E974")
 
+    // New colors for specification change https://trello.com/c/eFgC6MUU
+    static let freeSpaceNone  = UIColor(rgba: "#5C5C5C") // grey
+    static let freeSpaceLimited = UIColor(rgba: "#7F0304") // magenta
+    static let freeSpaceMedium = UIColor(rgba: "#1DAA8C") // teal
+    static let freeSpaceHighest = UIColor(rgba: "#006A39") // dark green
+
 	/**
 	Return a color between green and red based on a percentage value
 
 	- parameter percentage: value between 0 and 1
-	- parameter emptyLots: number of empty lots
 
 	- returns: UIColor
 	*/
-	static func colorBasedOnPercentage(_ percentage: Double, emptyLots: Int) -> UIColor {
+	static func colorBasedOnPercentage(_ percentage: Double) -> UIColor {
 
-		let hue = 1 - (percentage * 0.3 + 0.7) // I want to limit this to the colors between 0 and 0.3
+        // Normalize Double from undocumented API
+        let normalizedPercentage = Int(percentage * 100)
 
-		let useGrayscale = UserDefaults.standard.bool(forKey: Defaults.grayscaleUI)
-		if useGrayscale {
-			if emptyLots <= 0 {
-				return UIColor(red: 0.8, green: 0.8, blue: 0.8, alpha: 1.0)
-			}
-			return UIColor(red: CGFloat(1 - (hue+0.2)), green: CGFloat(1 - (hue+0.2)), blue: CGFloat(1 - (hue+0.2)), alpha: 1.0)
-		}
-
-		if emptyLots <= 0 {
-			return UIColor(hue: CGFloat(hue), saturation: 0.54, brightness: 0.7, alpha: 1.0)
-		}
-		return UIColor(hue: CGFloat(hue), saturation: 0.54, brightness: 0.8, alpha: 1.0)
+        switch normalizedPercentage {
+        case 85...99: return freeSpaceLimited
+        case 40...84: return freeSpaceMedium
+        case 1...39: return freeSpaceHighest
+        default: return freeSpaceNone
+        }
 	}
 }
 
