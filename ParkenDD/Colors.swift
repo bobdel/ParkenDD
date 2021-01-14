@@ -27,7 +27,6 @@ struct Colors {
 	*/
 	static func colorBasedOnPercentage(_ percentage: Double) -> UIColor {
 
-        // Normalize Double from undocumented API
         let normalizedPercentage = Int(percentage * 100)
 
         switch normalizedPercentage {
