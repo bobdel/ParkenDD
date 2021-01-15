@@ -19,7 +19,13 @@ enum Sections: Int {
 	case otherOptions
 }
 
+protocol SettingsDelegate {
+    func settingsDidDismiss()
+}
+
 class SettingsViewController: UITableViewController, MFMailComposeViewControllerDelegate {
+
+    var settingsDelegate: SettingsDelegate!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,7 +41,8 @@ class SettingsViewController: UITableViewController, MFMailComposeViewController
     }
 
 	@objc func dismiss() {
-		self.dismiss(animated: true, completion: nil)
+        settingsDelegate.settingsDidDismiss()
+        self.dismiss(animated: true, completion: nil)
 	}
 
 	override func viewWillAppear(_ animated: Bool) {
