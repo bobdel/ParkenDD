@@ -190,8 +190,13 @@ class LotlistViewController: UITableViewController, UIViewControllerPreviewingDe
 	
 	@IBAction func settingsButtonTapped(_ sender: UIBarButtonItem) {
 		let settingsStoryBoard = UIStoryboard(name: "Settings", bundle: Bundle.main)
-		let settingsVC = settingsStoryBoard.instantiateInitialViewController()!
-		navigationController?.present(settingsVC, animated: true, completion: nil)
+		let settingsNavigationController = settingsStoryBoard.instantiateInitialViewController()!
+
+        let controller = (settingsNavigationController as! UINavigationController).viewControllers[0]
+        let settingsController = controller as! SettingsViewController
+        settingsController.settingsDelegate = self
+
+        navigationController?.present(settingsNavigationController, animated: true, completion: nil)
 	}
 	
 	// /////////////////////////////////////////////////////////////////////////
@@ -303,4 +308,13 @@ class LotlistViewController: UITableViewController, UIViewControllerPreviewingDe
 		imageView.contentMode = UIViewContentMode.center
 		return imageView
 	}
+}
+
+// SettingsDelegate conformance
+extension LotlistViewController: SettingsDelegate {
+
+    func settingsDidDismiss() {
+        dataSource.sortLots()
+        tableView.reloadData()
+    }
 }
